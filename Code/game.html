@@ -39,12 +39,6 @@
 
     <!-- 設定画面（モーダル） -->
     <div id="winSettingsModal">
-        <label>WIN_POINT: <input type="number" id="winPointInput" value="250" min="1"></label><br>
-        <label>WIN_TURN: <input type="number" id="winTurnInput" value="10" min="1"></label><br>
-        <div style="display: flex; justify-content: space-between; padding: 5%;">
-            <button onclick="saveWinSettings()" style="padding: 10px 20px; font-size: 1.2em; width: 45%;">完了</button>
-            <button onclick="closeWinSettings()" style="padding: 10px 20px; font-size: 1.2em; width: 45%;">取消</button>
-        </div>
         <p id="my-id">ここにPeerIDが表示されます。</p><p id="my-id-2">（もし表示されなかったらリロードして別の言葉を登録してみてください。）</p>
         <input id="remote-id" placeholder="ここに相手のPeerIDを入力してください。">
         <button onclick="connectToPeer()" id="connectionButton">接続</button>
