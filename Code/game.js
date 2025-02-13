@@ -540,9 +540,9 @@ document.getElementById("setting_icon").addEventListener("click", function() {
     document.getElementById("winSettingsModal").style.display = "inline"
 })
 
-const roomName = prompt("設定するIDを入力してください（半角）");
+const roomName = prompt("合言葉を入力してください:");
 var utf8_RoomName = unescape(encodeURIComponent(roomName));
-const peer = new Peer(utf8_RoomName); // 設定されたIDをそのままPeer IDとして使う
+const peer = new Peer(utf8_RoomName); // 合言葉をそのままPeer IDとして使う
 let conn;
 let name = null; // null = 未確定, "p1" = ホスト, "p2" = ゲスト
 
@@ -556,8 +556,8 @@ peer.on('connection', connection => {
     if (name === null) {
         name = "p2"; // 後から接続した側は p2
         console.log("✅ あなたはゲスト (p2) になりました！");
-        document.getElementById("winSettingsModal").style.display = "none"
     }
+    document.getElementById("winSettingsModal").style.display = "none"
     setupConnection();
 });
 
@@ -565,8 +565,8 @@ function connectToPeer() {
     if (name === null) {
         name = "p1"; // 最初に接続する側を p1 に
         console.log("✅ あなたはホスト (p1) になりました！");
-        document.getElementById("winSettingsModal").style.display = "none"
     }
+    document.getElementById("winSettingsModal").style.display = "none"
     const remoteId = document.getElementById('remote-id').value;
     conn = peer.connect(remoteId);
     setupConnection();
