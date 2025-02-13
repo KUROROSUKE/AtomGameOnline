@@ -542,7 +542,7 @@ document.getElementById("setting_icon").addEventListener("click", function() {
 
 const roomName = prompt("設定するIDを入力してください（半角）");
 var utf8_RoomName = unescape(encodeURIComponent(roomName));
-const peer = new Peer(utf8_RoomName); // 合言葉をそのままPeer IDとして使う
+const peer = new Peer(utf8_RoomName); // 設定されたIDをそのままPeer IDとして使う
 let conn;
 let name = null; // null = 未確定, "p1" = ホスト, "p2" = ゲスト
 
