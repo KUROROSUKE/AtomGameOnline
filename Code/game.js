@@ -540,7 +540,7 @@ document.getElementById("setting_icon").addEventListener("click", function() {
     document.getElementById("winSettingsModal").style.display = "inline"
 })
 
-const roomName = prompt("合言葉を入力してください:");
+const roomName = prompt("設定するIDを入力してください（半角）");
 var utf8_RoomName = unescape(encodeURIComponent(roomName));
 const peer = new Peer(utf8_RoomName); // 合言葉をそのままPeer IDとして使う
 let conn;
