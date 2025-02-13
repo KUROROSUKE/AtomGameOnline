@@ -375,6 +375,8 @@ function resetGame() {
     time = "game";
     turn = Math.random() <= 0.5 ? "p1" : "p2";
     numTurn = 1;  // ターンカウントをリセット
+    p1_finish_select = true;
+    p2_finish_select = true;
 
     document.getElementById("p1_point").innerHTML = `ポイント：${p1_point}`;
     document.getElementById("p1_explain").innerHTML = "　";
@@ -540,7 +542,7 @@ document.getElementById("setting_icon").addEventListener("click", function() {
     document.getElementById("winSettingsModal").style.display = "inline"
 })
 
-const roomName = prompt("合言葉を入力してください:");
+const roomName = prompt("設定するIDを入力してください:");
 var utf8_RoomName = unescape(encodeURIComponent(roomName));
 const peer = new Peer(utf8_RoomName); // 合言葉をそのままPeer IDとして使う
 let conn;
