@@ -1,0 +1,1564 @@
+{
+    "material": [
+        {
+            "name": "なし",
+            "formula": "なし",
+            "point": 0,
+            "components": {},
+            "advantageous": [],
+            "number": 0
+        },
+        {
+            "name": "水素",
+            "formula": "H₂",
+            "point": 5,
+            "components": {
+                "H": 2
+            },
+            "advantageous": [
+                "MnO",
+                "MgO",
+                "BeO",
+                "CaO",
+                "CuO",
+                "FeO",
+                "ZnO",
+                "Li₂O",
+                "Al₂O₃",
+                "FeO",
+                "Fe₂O₃",
+                "Fe₃O₄",
+                "O₂"
+            ],
+            "number": 1
+        },
+        {
+            "name": "酸素",
+            "formula": "O₂",
+            "point": 5,
+            "components": {
+                "O": 2
+            },
+            "advantageous": [
+                "H₂",
+                "CH₄",
+                "C₈",
+                "C₂H₄",
+                "C₂H⑥",
+                "CH₃"
+            ],
+            "number": 2
+        },
+        {
+            "name": "窒素",
+            "formula": "N₂",
+            "point": 5,
+            "components": {
+                "N": 2
+            },
+            "advantageous": [
+                "H₂",
+                "O₂",
+                "NH₃",
+                "NO",
+                "NO₂",
+                "N₂O"
+            ],
+            "number": 3
+        },
+        {
+            "name": "塩素",
+            "formula": "Cl₂",
+            "point": 7,
+            "components": {
+                "Cl": 2
+            },
+            "advantageous": [
+                "H₂",
+                "Na",
+                "NaH",
+                "NH₃",
+                "C₆H₆",
+                "HCl",
+                "H₂O"
+            ],
+            "number": 4
+        },
+        {
+            "name": "ヨウ素",
+            "formula": "I₂",
+            "point": 15,
+            "components": {
+                "I": 2
+            },
+            "advantageous": [
+                "H₂",
+                "KI",
+                "Na",
+                "P",
+                "C₆H₆",
+                "HCl",
+                "H₂O"
+            ],
+            "number": 5
+        },
+        {
+            "name": "水",
+            "formula": "H₂O",
+            "point": 10,
+            "components": {
+                "H": 2,
+                "O": 1
+            },
+            "advantageous": [
+                "NH₃"
+            ],
+            "number": 6
+        },
+        {
+            "name": "過酸化水素",
+            "formula": "H₂O₂",
+            "point": 15,
+            "components": {
+                "H": 2,
+                "O": 2
+            },
+            "advantageous": [
+                "MnO₂",
+                "NaOH",
+                "KI",
+                "H₂O"
+            ],
+            "number": 7
+        },
+        {
+            "name": "硫化水素",
+            "formula": "H₂S",
+            "point": 10,
+            "components": {
+                "H": 2,
+                "S": 1
+            },
+            "advantageous": [
+                "O₂",
+                "Cl₂",
+                "I₂",
+                "CuO",
+                "NaOH"
+            ],
+            "number": 8
+        },
+        {
+            "name": "フッ化水素",
+            "formula": "HF",
+            "point": 10,
+            "components": {
+                "H": 1,
+                "F": 1
+            },
+            "advantageous": [
+                "SiO₂",
+                "NaOH",
+                "CaCO₃"
+            ],
+            "number": 9
+        },
+        {
+            "name": "塩化水素",
+            "formula": "HCl",
+            "point": 15,
+            "components": {
+                "H": 1,
+                "Cl": 1
+            },
+            "advantageous": [
+                "NaOH",
+                "KOH",
+                "NH₃",
+                "Zn",
+                "Fe"
+            ],
+            "number": 10
+        },
+        {
+            "name": "臭化水素",
+            "formula": "HBr",
+            "point": 17,
+            "components": {
+                "H": 1,
+                "Br": 1
+            },
+            "advantageous": [
+                "NaOH",
+                "KOH",
+                "NH₃",
+                "Zn",
+                "Fe"
+            ],
+            "number": 11
+        },
+        {
+            "name": "ヨウ化水素",
+            "formula": "HI",
+            "point": 15,
+            "components": {
+                "H": 1,
+                "I": 1
+            },
+            "advantageous": [
+                "NaOH",
+                "KOH₃",
+                "NH₃",
+                "Zn",
+                "Fe"
+            ],
+            "number": 12
+        },
+        {
+            "name": "酢酸",
+            "formula": "CH₃COOH",
+            "point": 50,
+            "components": {
+                "H": 4,
+                "C": 2,
+                "O": 2
+            },
+            "advantageous": [
+                "NaOH",
+                "KOH",
+                "NH₃"
+            ],
+            "number": 13
+        },
+        {
+            "name": "炭酸",
+            "formula": "H₂CO₃",
+            "point": 35,
+            "components": {
+                "H": 2,
+                "C": 1,
+                "O": 3
+            },
+            "advantageous": [
+                "CaO",
+                "NaOH",
+                "KOH"
+            ],
+            "number": 14
+        },
+        {
+            "name": "硝酸",
+            "formula": "HNO₃",
+            "point": 30,
+            "components": {
+                "H": 1,
+                "N": 1,
+                "O": 3
+            },
+            "advantageous": [
+                "C₈",
+                "H₂O"
+            ],
+            "number": 15
+        },
+        {
+            "name": "硫酸",
+            "formula": "H₂SO₄",
+            "point": 45,
+            "components": {
+                "H": 2,
+                "S": 1,
+                "O": 4
+            },
+            "advantageous": [
+                "O₂",
+                "O₃",
+                "Cl₂",
+                "F₂",
+                "I₂",
+                "HNO₃",
+                "H₂SO₄",
+                "MnO₄",
+                "MnO₂",
+                "ClO",
+                "H₂",
+                "FeS",
+                "H₂S",
+                "HCl",
+                "KI",
+                "Na₂C₂O₄",
+                "H₂C₂O₄",
+                "Na₂S₂O₃",
+                "H₂O₂",
+                "SO₂"
+            ],
+            "number": 16
+        },
+        {
+            "name": "二酸化炭素",
+            "formula": "CO₂",
+            "point": 7,
+            "components": {
+                "C": 1,
+                "O": 2
+            },
+            "advantageous": [
+                "NaOH",
+                "KOH",
+                "CaO"
+            ],
+            "number": 17
+        },
+        {
+            "name": "一酸化炭素",
+            "formula": "CO",
+            "point": 5,
+            "components": {
+                "C": 1,
+                "O": 1
+            },
+            "advantageous": [
+                "O₂",
+                "Cl₂",
+                "H₂",
+                "Fe₂O₃"
+            ],
+            "number": 18
+        },
+        {
+            "name": "二酸化窒素",
+            "formula": "NO₂",
+            "point": 7,
+            "components": {
+                "N": 1,
+                "O": 2
+            },
+            "advantageous": [
+                "H₂O",
+                "NH₃",
+                "SO₂"
+            ],
+            "number": 19
+        },
+        {
+            "name": "一酸化窒素",
+            "formula": "NO",
+            "point": 5,
+            "components": {
+                "N": 1,
+                "O": 1
+            },
+            "advantageous": [
+                "O₂",
+                "Cl₂",
+                "H₂"
+            ],
+            "number": 20
+        },
+        {
+            "name": "二酸化硫黄",
+            "formula": "SO₂",
+            "point": 10,
+            "components": {
+                "S": 1,
+                "O": 2
+            },
+            "advantageous": [
+                "O₂",
+                "Cl₂",
+                "NH₃"
+            ],
+            "number": 21
+        },
+        {
+            "name": "オゾン",
+            "formula": "O₃",
+            "point": 12,
+            "components": {
+                "O": 3
+            },
+            "advantageous": [
+                "C₂H₄",
+                "NO",
+                "SO₂",
+                "O₂"
+            ],
+            "number": 22
+        },
+        {
+            "name": "アンモニア",
+            "formula": "NH₃",
+            "point": 15,
+            "components": {
+                "H": 3,
+                "N": 1
+            },
+            "advantageous": [
+                "HCl",
+                "H₂SO₄",
+                "I₂",
+                "Br₂"
+            ],
+            "number": 23
+        },
+        {
+            "name": "チオ硫酸カリウム",
+            "formula": "K₂S₂O₃",
+            "point": 150,
+            "components": {
+                "K": 2,
+                "S": 2,
+                "O": 3
+            },
+            "advantageous": [
+                "I₂",
+                "Cl₂",
+                "HNO₃",
+                "H₂SO₄"
+            ],
+            "number": 24
+        },
+        {
+            "name": "塩化ナトリウム",
+            "formula": "NaCl",
+            "point": 20,
+            "components": {
+                "Na": 1,
+                "Cl": 1
+            },
+            "advantageous": [
+                "H₂SO₄",
+                "NaOH",
+                "H₂O"
+            ],
+            "number": 25
+        },
+        {
+            "name": "塩化カリウム",
+            "formula": "KCl",
+            "point": 20,
+            "components": {
+                "K": 1,
+                "Cl": 1
+            },
+            "advantageous": [
+                "H₂SO₄",
+                "KOH",
+                "H₂O"
+            ],
+            "number": 26
+        },
+        {
+            "name": "塩化マグネシウム",
+            "formula": "MgCl₂",
+            "point": 30,
+            "components": {
+                "Mg": 1,
+                "Cl": 2
+            },
+            "advantageous": [
+                "HCl",
+                "H₂SO₄"
+            ],
+            "number": 27
+        },
+        {
+            "name": "塩化カルシウム",
+            "formula": "CaCl₂",
+            "point": 30,
+            "components": {
+                "Ca": 1,
+                "Cl": 2
+            },
+            "advantageous": [
+                "HCl",
+                "H₂SO₄"
+            ],
+            "number": 28
+        },
+        {
+            "name": "塩化バリウム",
+            "formula": "BaCl₂",
+            "point": 30,
+            "components": {
+                "Ba": 1,
+                "Cl": 2
+            },
+            "advantageous": [
+                "HCl",
+                "H₂SO₄"
+            ],
+            "number": 29
+        },
+        {
+            "name": "塩化アルミニウム",
+            "formula": "AlCl₃",
+            "point": 40,
+            "components": {
+                "Al": 1,
+                "Cl": 3
+            },
+            "advantageous": [
+                "HCl",
+                "H₂SO₄"
+            ],
+            "number": 30
+        },
+        {
+            "name": "塩化アンモニウム",
+            "formula": "NH₄Cl",
+            "point": 35,
+            "components": {
+                "H": 4,
+                "N": 1,
+                "Cl": 1
+            },
+            "advantageous": [
+                "H₂O",
+                "NaOH"
+            ],
+            "number": 31
+        },
+        {
+            "name": "塩化銀",
+            "formula": "AgCl",
+            "point": 25,
+            "components": {
+                "Ag": 1,
+                "Cl": 1
+            },
+            "advantageous": [
+                "NaOH",
+                "H₂O"
+            ],
+            "number": 32
+        },
+        {
+            "name": "塩化亜鉛",
+            "formula": "ZnCl₂",
+            "point": 35,
+            "components": {
+                "Zn": 1,
+                "Cl": 2
+            },
+            "advantageous": [
+                "NaOH",
+                "H₂O"
+            ],
+            "number": 33
+        },
+        {
+            "name": "塩化銅（Ⅱ）",
+            "formula": "CuCl₂",
+            "point": 35,
+            "components": {
+                "Cu": 1,
+                "Cl": 2
+            },
+            "advantageous": [
+                "NaOH",
+                "H₂O"
+            ],
+            "number": 34
+        },
+        {
+            "name": "硫化銅（Ⅱ）",
+            "formula": "CuS",
+            "point": 25,
+            "components": {
+                "Cu": 1,
+                "S": 1
+            },
+            "advantageous": [
+                "O₂",
+                "H₂SO₄",
+                "HCl"
+            ],
+            "number": 35
+        },
+        {
+            "name": "硫化鉄（Ⅱ）",
+            "formula": "FeS",
+            "point": 25,
+            "components": {
+                "Fe": 1,
+                "S": 1
+            },
+            "advantageous": [
+                "O₂",
+                "H₂SO₄",
+                "HCl"
+            ],
+            "number": 36
+        },
+        {
+            "name": "硫化ナトリウム",
+            "formula": "Na₂S",
+            "point": 30,
+            "components": {
+                "S": 1,
+                "Na": 2
+            },
+            "advantageous": [
+                "HCl",
+                "H₂SO₄"
+            ],
+            "number": 37
+        },
+        {
+            "name": "硫化亜鉛",
+            "formula": "ZnS",
+            "point": 20,
+            "components": {
+                "Zn": 1,
+                "S": 1
+            },
+            "advantageous": [
+                "O₂",
+                "H₂SO₄",
+                "HCl"
+            ],
+            "number": 38
+        },
+        {
+            "name": "硫化カルシウム",
+            "formula": "CaS",
+            "point": 20,
+            "components": {
+                "Ca": 1,
+                "S": 1
+            },
+            "advantageous": [
+                "O₂",
+                "H₂SO₄",
+                "HCl"
+            ],
+            "number": 39
+        },
+        {
+            "name": "硫酸銅（Ⅱ）",
+            "formula": "CuSO₄",
+            "point": 55,
+            "components": {
+                "Cu": 1,
+                "S": 1,
+                "O": 4
+            },
+            "advantageous": [
+                "NaOH",
+                "KOH",
+                "NH₃"
+            ],
+            "number": 40
+        },
+        {
+            "name": "硫酸鉄（Ⅱ）",
+            "formula": "FeSO₄",
+            "point": 55,
+            "components": {
+                "Fe": 1,
+                "S": 1,
+                "O": 4
+            },
+            "advantageous": [
+                "NaOH",
+                "KOH",
+                "NH₃"
+            ],
+            "number": 41
+        },
+        {
+            "name": "硫酸ナトリウム",
+            "formula": "Na₂SO₄",
+            "point": 60,
+            "components": {
+                "Na": 2,
+                "S": 1,
+                "O": 4
+            },
+            "advantageous": [
+                "CaCl₂",
+                "BaCl₂"
+            ],
+            "number": 42
+        },
+        {
+            "name": "硫酸カリウム",
+            "formula": "K₂SO₄",
+            "point": 60,
+            "components": {
+                "K": 2,
+                "S": 1,
+                "O": 4
+            },
+            "advantageous": [
+                "CaCl₂",
+                "BaCl₂"
+            ],
+            "number": 43
+        },
+        {
+            "name": "硫酸カルシウム",
+            "formula": "CaSO₄",
+            "point": 60,
+            "components": {
+                "Ca": 1,
+                "S": 1,
+                "O": 4
+            },
+            "advantageous": [
+                "NaOH",
+                "KOH"
+            ],
+            "number": 44
+        },
+        {
+            "name": "過マンガン酸カリウム",
+            "formula": "KMnO₄",
+            "point": 135,
+            "components": {
+                "K": 1,
+                "Mn": 1,
+                "O": 4
+            },
+            "advantageous": [
+                "H₂O₂",
+                "HCl",
+                "H₂S",
+                "SO₂",
+                "Fe₂+",
+                "C",
+                "Na₂C₂O₄",
+                "I₂"
+            ],
+            "number": 45
+        },
+        {
+            "name": "硝酸銀",
+            "formula": "AgNO₃",
+            "point": 45,
+            "components": {
+                "Ag": 1,
+                "N": 1,
+                "O": 3
+            },
+            "advantageous": [
+                "NaOH",
+                "KOH",
+                "NH₃"
+            ],
+            "number": 46
+        },
+        {
+            "name": "硝酸ナトリウム",
+            "formula": "NaNO₃",
+            "point": 45,
+            "components": {
+                "Na": 1,
+                "N": 1,
+                "O": 3
+            },
+            "advantageous": [
+                "NaOH",
+                "KOH",
+                "NH₃"
+            ],
+            "number": 47
+        },
+        {
+            "name": "硝酸カリウム",
+            "formula": "KNO₃",
+            "point": 45,
+            "components": {
+                "K": 1,
+                "N": 1,
+                "O": 3
+            },
+            "advantageous": [
+                "NaOH",
+                "KOH",
+                "NH₃"
+            ],
+            "number": 48
+        },
+        {
+            "name": "窒化アルミニウム",
+            "formula": "AlN",
+            "point": 23,
+            "components": {
+                "Al": 1,
+                "N": 1
+            },
+            "advantageous": [
+                "HCl",
+                "H₂SO₄",
+                "HNO₃",
+                "H₂O"
+            ],
+            "number": 49
+        },
+        {
+            "name": "炭酸ナトリウム",
+            "formula": "Na₂CO₃",
+            "point": 65,
+            "components": {
+                "Na": 2,
+                "C": 1,
+                "O": 3
+            },
+            "advantageous": [
+                "CaCl₂",
+                "BaCl₂",
+                "H₂O"
+            ],
+            "number": 50
+        },
+        {
+            "name": "炭酸水素ナトリウム",
+            "formula": "NaHCO₃",
+            "point": 65,
+            "components": {
+                "Na": 1,
+                "H": 1,
+                "C": 1,
+                "O": 3
+            },
+            "advantageous": [
+                "HCl",
+                "H₂SO₄",
+                "H₂O"
+            ],
+            "number": 51
+        },
+        {
+            "name": "炭酸マグネシウム",
+            "formula": "MgCO₃",
+            "point": 60,
+            "components": {
+                "Mg": 1,
+                "C": 1,
+                "O": 3
+            },
+            "advantageous": [
+                "HCl",
+                "H₂SO₄"
+            ],
+            "number": 52
+        },
+        {
+            "name": "炭酸カルシウム",
+            "formula": "CaCO₃",
+            "point": 60,
+            "components": {
+                "Ca": 1,
+                "C": 1,
+                "O": 3
+            },
+            "advantageous": [
+                "HCl",
+                "H₂SO₄"
+            ],
+            "number": 53
+        },
+        {
+            "name": "炭酸バリウム",
+            "formula": "BaCO₃",
+            "point": 60,
+            "components": {
+                "Ba": 1,
+                "C": 1,
+                "O": 3
+            },
+            "advantageous": [
+                "HCl",
+                "H₂SO₄"
+            ],
+            "number": 54
+        },
+        {
+            "name": "窒化ホウ素",
+            "formula": "BN",
+            "point": 23,
+            "components": {
+                "B": 1,
+                "N": 1
+            },
+            "advantageous": [],
+            "number": 55
+        },
+        {
+            "name": "水酸化ナトリウム",
+            "formula": "NaOH",
+            "point": 45,
+            "components": {
+                "Na": 1,
+                "O": 1,
+                "H": 1
+            },
+            "advantageous": [
+                "HCl",
+                "H₂SO₄",
+                "CO₂"
+            ],
+            "number": 56
+        },
+        {
+            "name": "水酸化カリウム",
+            "formula": "KOH",
+            "point": 45,
+            "components": {
+                "K": 1,
+                "O": 1,
+                "H": 1
+            },
+            "advantageous": [
+                "HCl",
+                "H₂SO₄",
+                "CO₂"
+            ],
+            "number": 57
+        },
+        {
+            "name": "水酸化カルシウム",
+            "formula": "Ca(OH)₂",
+            "point": 75,
+            "components": {
+                "Ca": 1,
+                "O": 2,
+                "H": 2
+            },
+            "advantageous": [
+                "HCl",
+                "H₂SO₄",
+                "CO₂"
+            ],
+            "number": 58
+        },
+        {
+            "name": "水酸化アルミニウム",
+            "formula": "Al(OH)₃",
+            "point": 75,
+            "components": {
+                "Al": 1,
+                "O": 3,
+                "H": 3
+            },
+            "advantageous": [
+                "HCl",
+                "H₂SO₄",
+                "CO₂"
+            ],
+            "number": 59
+        },
+        {
+            "name": "水酸化バリウム",
+            "formula": "Ba(OH)₂",
+            "point": 75,
+            "components": {
+                "Ba": 1,
+                "O": 2,
+                "H": 2
+            },
+            "advantageous": [
+                "HCl",
+                "H₂SO₄",
+                "CO₂"
+            ],
+            "number": 60
+        },
+        {
+            "name": "酸化マグネシウム",
+            "formula": "MgO",
+            "point": 17,
+            "components": {
+                "Mg": 1,
+                "O": 1
+            },
+            "advantageous": [
+                "HCl",
+                "H₂SO₄"
+            ],
+            "number": 61
+        },
+        {
+            "name": "酸化カルシウム",
+            "formula": "CaO",
+            "point": 17,
+            "components": {
+                "Ca": 1,
+                "O": 1
+            },
+            "advantageous": [
+                "HCl",
+                "H₂SO₄"
+            ],
+            "number": 62
+        },
+        {
+            "name": "酸化アルミニウム",
+            "formula": "Al₂O₃",
+            "point": 75,
+            "components": {
+                "Al": 2,
+                "O": 3
+            },
+            "advantageous": [
+                "HCl",
+                "H₂SO₄"
+            ],
+            "number": 63
+        },
+        {
+            "name": "酸化鉄（Ⅱ）",
+            "formula": "FeO",
+            "point": 15,
+            "components": {
+                "Fe": 1,
+                "O": 1
+            },
+            "advantageous": [
+                "HCl",
+                "H₂SO₄"
+            ],
+            "number": 64
+        },
+        {
+            "name": "酸化鉄（Ⅲ）",
+            "formula": "Fe₂O₃",
+            "point": 55,
+            "components": {
+                "Fe": 2,
+                "O": 3
+            },
+            "advantageous": [
+                "HCl",
+                "H₂SO₄"
+            ],
+            "number": 65
+        },
+        {
+            "name": "酸化鉄（Ⅳ）",
+            "formula": "Fe₃O₄",
+            "point": 90,
+            "components": {
+                "Fe": 3,
+                "O": 4
+            },
+            "advantageous": [
+                "HCl",
+                "H₂SO₄"
+            ],
+            "number": 66
+        },
+        {
+            "name": "酸化亜鉛",
+            "formula": "ZnO",
+            "point": 15,
+            "components": {
+                "Zn": 1,
+                "O": 1
+            },
+            "advantageous": [
+                "HCl",
+                "H₂SO₄"
+            ],
+            "number": 67
+        },
+        {
+            "name": "メタン",
+            "formula": "CH₄",
+            "point": 30,
+            "components": {
+                "C": 1,
+                "H": 4
+            },
+            "advantageous": [
+                "O₂",
+                "Cl₂",
+                "H₂O"
+            ],
+            "number": 68
+        },
+        {
+            "name": "エタン",
+            "formula": "C₂H₆",
+            "point": 100,
+            "components": {
+                "C": 2,
+                "H": 6
+            },
+            "advantageous": [
+                "O₂",
+                "Cl₂",
+                "H₂O"
+            ],
+            "number": 69
+        },
+        {
+            "name": "エチレン",
+            "formula": "C₂H₄",
+            "point": 55,
+            "components": {
+                "C": 2,
+                "H": 4
+            },
+            "advantageous": [
+                "O₂",
+                "Cl₂",
+                "H₂O"
+            ],
+            "number": 70
+        },
+        {
+            "name": "ダイヤモンド",
+            "formula": "C₈",
+            "point": 200,
+            "components": {
+                "C": 8
+            },
+            "advantageous": [
+                "O₂",
+                "Cl₂",
+                "H₂O"
+            ],
+            "number": 71
+        },
+        {
+            "name": "酸化リチウム",
+            "formula": "Li₂O",
+            "point": 35,
+            "components": {
+                "Li": 2,
+                "O": 1
+            },
+            "advantageous": [
+                "HCl",
+                "H₂SO₄",
+                "H₂O"
+            ],
+            "number": 72
+        },
+        {
+            "name": "メチル",
+            "formula": "CH₃",
+            "point": 20,
+            "components": {
+                "C": 1,
+                "H": 3
+            },
+            "advantageous": [
+                "O₂",
+                "Cl₂",
+                "H₂O"
+            ],
+            "number": 73
+        },
+        {
+            "name": "リン酸",
+            "formula": "H₃PO₄",
+            "point": 135,
+            "components": {
+                "P": 1,
+                "H": 3,
+                "O": 4
+            },
+            "advantageous": [
+                "NaOH",
+                "KOH",
+                "Ca(OH)₂"
+            ],
+            "number": 74
+        },
+        {
+            "name": "酸化銅",
+            "formula": "CuO",
+            "point": 17,
+            "components": {
+                "Cu": 1,
+                "O": 1
+            },
+            "advantageous": [
+                "H₂",
+                "CO",
+                "H₂SO₄"
+            ],
+            "number": 75
+        },
+        {
+            "name": "二酸化ケイ素",
+            "formula": "SiO₂",
+            "point": 25,
+            "components": {
+                "Si": 1,
+                "O": 2
+            },
+            "advantageous": [
+                "HF",
+                "NaOH",
+                "KOH"
+            ],
+            "number": 76
+        },
+        {
+            "name": "酸化ベリリウム",
+            "formula": "BeO",
+            "point": 10,
+            "components": {
+                "Be": 1,
+                "O": 1
+            },
+            "advantageous": [
+                "H₂SO₄",
+                "NaOH",
+                "KOH"
+            ],
+            "number": 77
+        },
+        {
+            "name": "ヘリウム",
+            "formula": "He",
+            "point": 3,
+            "components": {
+                "He": 1
+            },
+            "advantageous": [],
+            "number": 78
+        },
+        {
+            "name": "アルゴン",
+            "formula": "Ar",
+            "point": 3,
+            "components": {
+                "Ar": 1
+            },
+            "advantageous": [],
+            "number": 79
+        },
+        {
+            "name": "ネオン",
+            "formula": "Ne",
+            "point": 3,
+            "components": {
+                "Ne": 1
+            },
+            "advantageous": [],
+            "number": 80
+        },
+        {
+            "name": "亜硝酸アンモニウム",
+            "formula": "NH₄NO",
+            "point": 130,
+            "components": {
+                "N": 2,
+                "H": 4,
+                "O": 1
+            },
+            "advantageous": [
+                "HCl",
+                "H₂SO₄",
+                "H₂O"
+            ],
+            "number": 81
+        },
+        {
+            "name": "過マンガン酸カリウム",
+            "formula": "MnO₄",
+            "point": 60,
+            "components": {
+                "Mn": 1,
+                "O": 4
+            },
+            "advantageous": [
+                "HCl",
+                "H₂SO₄",
+                "KI"
+            ],
+            "number": 82
+        },
+        {
+            "name": "酸化マンガン",
+            "formula": "MnO₂",
+            "point": 20,
+            "components": {
+                "Mn": 1,
+                "O": 2
+            },
+            "advantageous": [
+                "HCl",
+                "H₂SO₄",
+                "H₂O₂"
+            ],
+            "number": 83
+        },
+        {
+            "name": "次亜塩素酸ナトリウム",
+            "formula": "NaClO",
+            "point": 55,
+            "components": {
+                "Cl": 1,
+                "O": 1,
+                "Na": 1
+            },
+            "advantageous": [],
+            "number": null
+        },
+        {
+            "name": "次亜塩素酸",
+            "formula": "ClO",
+            "point": 20,
+            "components": {
+                "Cl": 1,
+                "O": 1
+            },
+            "advantageous": [
+                "HCl",
+                "H₂SO₄",
+                "KI"
+            ],
+            "number": 84
+        },
+        {
+            "name": "チオ硫酸ナトリウム",
+            "formula": "Na₂S₂O₃",
+            "point": 150,
+            "components": {
+                "Na": 2,
+                "S": 2,
+                "O": 3
+            },
+            "advantageous": [
+                "HCl",
+                "H₂SO₄",
+                "I₂"
+            ],
+            "number": 85
+        },
+        {
+            "name": "シュウ酸",
+            "formula": "H₂C₂O₄",
+            "point": 50,
+            "components": {
+                "H": 2,
+                "C": 2,
+                "O": 4
+            },
+            "advantageous": [
+                "NaOH",
+                "KOH",
+                "H₂O₂"
+            ],
+            "number": 86
+        },
+        {
+            "name": "シュウ酸ナトリウム",
+            "formula": "Na₂C₂O₄",
+            "point": 130,
+            "components": {
+                "Na": 2,
+                "C": 2,
+                "O": 4
+            },
+            "advantageous": [
+                "HCl",
+                "H₂SO₄",
+                "H₂O₂"
+            ],
+            "number": 87
+        },
+        {
+            "name": "フッ素",
+            "formula": "F₂",
+            "point": 20,
+            "components": {
+                "F": 2
+            },
+            "advantageous": [
+                "H₂O",
+                "C",
+                "I₂"
+            ],
+            "number": 88
+        },
+        {
+            "name": "ヨウ化カリウム",
+            "formula": "KI",
+            "point": 30,
+            "components": {
+                "K": 1,
+                "I": 1
+            },
+            "advantageous": [
+                "Cl₂",
+                "Br₂",
+                "I₂"
+            ],
+            "number": 89
+        },
+        {
+            "name": "窒化炭素",
+            "formula": "C₃N₄",
+            "point": 100,
+            "components": {
+                "C": 3,
+                "N": 4
+            },
+            "advantageous": [
+                "H₂O",
+                "HCl",
+                "H₂SO₄"
+            ],
+            "number": 90
+        },
+        {
+            "name": "窒化リン",
+            "formula": "PN",
+            "point": 23,
+            "components": {
+                "P": 1,
+                "N": 1
+            },
+            "advantageous": [
+                "H₂O",
+                "HCl",
+                "H₂SO₄"
+            ],
+            "number": 91
+        },
+        {
+            "name": "リン酸二水素ナトリウム",
+            "formula": "NaH₂PO₄",
+            "point": 140,
+            "components": {
+                "P": 1,
+                "Na": 1,
+                "H": 2,
+                "O": 4
+            },
+            "advantageous": [
+                "NaOH",
+                "KOH",
+                "Ca(OH)₂"
+            ],
+            "number": 92
+        },
+        {
+            "name": "フッ化ナトリウム",
+            "formula": "NaF",
+            "point": 35,
+            "components": {
+                "F": 1,
+                "Na": 1
+            },
+            "advantageous": [
+                "H₂O",
+                "HCl",
+                "H₂SO₄"
+            ],
+            "number": 94
+        },
+        {
+            "name": "水素化ナトリウム",
+            "formula": "NaH",
+            "point": 30,
+            "components": {
+                "H": 1,
+                "Na": 1
+            },
+            "advantageous": [
+                "H₂O",
+                "HCl",
+                "H₂SO₄"
+            ],
+            "number": 95
+        },
+        {
+            "name": "ヨウ化ナトリウム",
+            "formula": "NaI",
+            "point": 35,
+            "components": {
+                "I": 1,
+                "Na": 1
+            },
+            "advantageous": [
+                "Cl₂",
+                "Br₂",
+                "H₂O"
+            ],
+            "number": 96
+        },
+        {
+            "name": "酸化アルミニウム",
+            "formula": "AlO",
+            "point": 17,
+            "components": {
+                "O": 1,
+                "Al": 1
+            },
+            "advantageous": [
+            ],
+            "number": 97
+        },
+        {
+            "name": "クロロホルム",
+            "formula": "CHCl₃",
+            "point": 110,
+            "components": {
+                "C": 1,
+                "H": 1,
+                "Cl": 3
+            },
+            "advantageous": [
+            ],
+            "number": 98
+        },
+        {
+            "name": "エタノール",
+            "formula": "C₂H₆O",
+            "point": 200,
+            "components": {
+                "C": 2,
+                "H": 6,
+                "O": 1
+            },
+            "advantageous": [
+            ],
+            "number": 99
+        },
+        {
+            "name": "アセチレン",
+            "formula": "C₂H₂",
+            "point": 25,
+            "components": {
+                "C": 2,
+                "H": 2
+            },
+            "advantageous": [
+            ],
+            "number": 100
+        },
+        {
+            "name": "水素化カリウム",
+            "formula": "KH",
+            "point": 30,
+            "components": {
+                "K": 1,
+                "H": 1
+            },
+            "advantageous": [
+            ],
+            "number": 101
+        },
+        {
+            "name": "水素化マグネシウム",
+            "formula": "MgH₂",
+            "point": 35,
+            "components": {
+                "Mg": 1,
+                "H": 2
+            },
+            "advantageous": [
+            ],
+            "number": 102
+        }
+    ]
+}
