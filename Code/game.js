@@ -3,9 +3,14 @@ let p1_point = 0; let p2_point = 0
 let p1_selected_card = []; let p2_selected_card = []
 
 const card_num = 8 //カードの枚数。基本的に8枚
+let WIN_POINT = 250
+let WIN_TURN = 10
+let numTurn = 0
+
 
 let dropped_cards_p1 = []; let dropped_cards_p2 = [] //捨てられた牌が集められる。
 
+let is_ok_p1 = false; let is_ok_p2 = false //true: OK  false: notOK
 let p1_finish_select = true; let p2_finish_select = true //true: 未選択  false: 選択済み
 let p1_make_material = {} //p1が生成した物質が送られてきたときにMaterial形式で代入される
 
@@ -48,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
     random_hand()
     view_p1_hand()
     view_p2_hand()
-    turn = Math.random()>=0.5 ? "p1" : "p2"
+    turn = "p1"
 })
 //ゲームに必要な物の読み込み（終了）
 
@@ -143,29 +148,22 @@ async function p2_make() {
 async function done(who, isRon = false) {
     const p2_make_material = await p2_make();
     
-    // 10秒後に強制終了
-    const timeoutPromise = new Promise(resolve => setTimeout(resolve, 10000));
+    // 待機用のPromise
+    await new Promise(resolve => {
+        const checkInterval = setInterval(() => {
+            if (!p1_finish_select && !p2_finish_select) {
+                clearInterval(checkInterval);
+                resolve();
+            }
+        }, 100);
+    });
 
-    // `p1_finish_select` と `p2_finish_select` の両方が `false` になるのを待つ
-    await Promise.race([
-        new Promise(resolve => {
-            const checkInterval = setInterval(() => {
-                if (!p1_finish_select && !p2_finish_select) {
-                    clearInterval(checkInterval);
-                    resolve();
-                }
-            }, 100);
-        }),
-        timeoutPromise // タイムアウト処理
-    ]);
-
-    console.log("next process");
+    //console.log("next process");
     if (name === "p2") {
         console.log("done")
         finish_done_select(p1_make_material, p2_make_material, who, isRon);
     }
 }
-
 async function finish_done_select(p1_make_material,p2_make_material,who,isRon=false) {
     dora = await get_dora();
     //console.log(`ドラ: ${dora}`);
@@ -214,23 +212,70 @@ async function finish_done_select(p1_make_material,p2_make_material,who,isRon=fa
 
     winnerAndChangeButton()
 }
+// 1. まずは「is_ok_p1 と is_ok_p2 の両方が true になるのを待つ」関数を用意
+function waitUntilBothTrue(getVar1, getVar2, interval = 100) {
+    return new Promise((resolve) => {
+        const timer = setInterval(() => {
+            if (getVar1() && getVar2()) {
+            clearInterval(timer);
+            resolve();
+            }
+        }, interval);
+    });
+}
+
 async function winnerAndChangeButton() {
+    // 2. 勝者判定
+    const winner = await win_check();
+    
     document.getElementById("done_button").style.display = "none";
     const button = document.getElementById("nextButton");
     button.style.display = "inline";
-    //console.log("ゲーム終了");
-    button.textContent = "ラウンド終了";
-    button.addEventListener("click", function () {
-        returnToStartScreen()
-        p1_point = 0;
-        p2_point = 0;
-        resetGame();
-        button.style.display = "none"
-        const newButton = button.cloneNode(true);
-        button.parentNode.replaceChild(newButton, button);
-        conn.close()
-    });
+  
+    // 3. winner が false → 「次のゲーム」ボタン
+    if (!winner) {
+        console.log("次のゲーム");
+        button.textContent = "次のゲーム";
+        
+        // クリック時の処理を async 化する
+        button.addEventListener("click", async function () {
+            // 4. is_ok_p1 と is_ok_p2 がともに true になるまで待つ
+            is_ok_p2 = true;
+            nextIsOK()
+            await waitUntilBothTrue(
+                () => is_ok_p1,
+                () => is_ok_p2
+            );
+            is_ok_p1 = false
+            is_ok_p2 = false
+            // 5. 両方 OK なら、次のゲーム処理を実行
+            numTurn += 1;
+            resetGame();
+            button.style.display = "none";
+            // addEventListener の重複を避けるため、一度ボタンを置き換える
+            const newButton = button.cloneNode(true);
+            button.parentNode.replaceChild(newButton, button);
+        });
+        } 
+        // 6. winner が true → 「ラウンド終了」ボタン
+        else {
+        console.log("ラウンド終了");
+        button.textContent = "ラウンド終了";
+        button.addEventListener("click", function () {
+            returnToStartScreen();
+            p1_point = 0;
+            p2_point = 0;
+            numTurn = 0;
+            resetGame();
+            button.style.display = "none";
+            
+            const newButton = button.cloneNode(true);
+            button.parentNode.replaceChild(newButton, button);
+            conn.close();
+        });
+    }
 }
+  
 
 //その他処理の関数定義（開始）
 function drawCard() {
@@ -298,7 +343,9 @@ async function search(components) {
 async function get_dora() {
     return element[Math.round(Math.random()*23)]
 }
-
+async function win_check() {
+    return Math.abs(p1_point - p2_point) >= WIN_POINT ? p1_point>p2_point ? "p1": "p2" : numTurn >= WIN_TURN ? p1_point>p2_point ? "p1": "p2" : null
+}
 const generate_Button = document.getElementById("generate_button")
 generate_Button.addEventListener("click", function () {
     if (turn === name) {
@@ -327,7 +374,7 @@ function resetGame() {
     p1_selected_card = [];
     p2_selected_card = [];
     time = "game";
-    turn = Math.random() <= 0.5 ? "p1" : "p2";
+    turn = "p1"
     p1_finish_select = true;
     p2_finish_select = true;
 
@@ -401,13 +448,14 @@ document.getElementById("setting_icon").addEventListener("click", function() {
 
 
 
-
+//P2P通信
 const roomName = prompt("設定するIDを入力してください:");
 const peer = new Peer(roomName); // 合言葉をそのままPeer IDとして使う
 let conn;
 let name = null; // null = 未確定, "p1" = ホスト, "p2" = ゲスト
 
 peer.on('open', id => {
+    console.log(id)
     document.getElementById('my-id').innerText = `自分のPeerID：${id}`;
     document.getElementById("winSettingsModal").style.display = "none"
 });
@@ -432,6 +480,7 @@ function connectToPeer() {
     setupConnection();
 }
 
+//データを受け取った時の処理
 function setupConnection() {
     conn.on('open', () => {
         //console.log('🔗 接続しました！');
@@ -486,6 +535,9 @@ function setupConnection() {
             document.getElementById("p2_explain").innerHTML = data.p2_explain
             winnerAndChangeButton()
         }
+        if (data.type === "nextIsOK") {
+            is_ok_p1 = true
+        }
         if (data.p1_hand !== undefined) p1_hand = data.p1_hand;
         if (data.deck !== undefined) deck = data.deck;
     });
@@ -539,6 +591,10 @@ async function sharePoints() {
     }
 }
 
-/* 現在のバグ
+async function nextIsOK() {
+    if (conn && conn.open) {
+        conn.send({type: "nextIsOK", content: true})
+    }
+}
 
-*/
+//どちらも「次のゲーム」ボタンを押すまで待機が必要
