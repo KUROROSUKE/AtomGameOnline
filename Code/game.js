@@ -7,7 +7,6 @@ let WIN_POINT = 250
 let WIN_TURN = 10
 let numTurn = 0
 
-
 let dropped_cards_p1 = []; let dropped_cards_p2 = [] //捨てられた牌が集められる。
 
 let is_ok_p1 = false; let is_ok_p2 = false //true: OK  false: notOK
@@ -226,7 +225,6 @@ function waitUntilBothTrue(getVar1, getVar2, interval = 100) {
         }, interval);
     });
 }
-
 async function winnerAndChangeButton() {
     // 2. 勝者判定
     const winner = await win_check();
@@ -278,7 +276,47 @@ async function winnerAndChangeButton() {
         });
     }
 }
-  
+
+//置き場
+async function checkRon(droppedCard) {
+    // P2のロン判定
+    const possibleMaterialsP2 = await search_materials(arrayToObj([...p2_hand, droppedCard]));
+    if (possibleMaterialsP2.length > 1) {
+        const ronButton = document.getElementById("ron_button");
+        ronButton.style.display = "inline";
+        ronButton.replaceWith(ronButton.cloneNode(true));
+        const newRonButton = document.getElementById("ron_button");
+
+        newRonButton.addEventListener("click", function () {
+            newRonButton.style.display = "none";
+            p2_selected_card = [droppedCard];
+            p2_make()
+            shareAction(action="generate",otherData=name);
+        });
+    }
+
+    // P1のロン判定（捨てられたカードを含める）
+    const possibleMaterialsP1 = await search_materials(arrayToObj([...p1_hand, droppedCard]));
+    const highPointMaterialsP1 = possibleMaterialsP1.filter(material => material.point >= 70);
+
+    if (highPointMaterialsP1.length > 1) {
+        // **P1の手札に捨てたカードがもうない可能性があるため、戻す**
+        p1_hand.push(droppedCard);
+        // P1のロン処理のため、ロンに使うカードを選択
+        p1_selected_card = [droppedCard];
+        // P1のロン処理を実行
+        p2_make()
+        shareAction(action="generate",otherData=name);
+    }
+}
+
+
+
+
+
+
+
+
 
 //その他処理の関数定義（開始）
 function drawCard() {
@@ -515,7 +553,8 @@ function setupConnection() {
                 img.src = imageCache[elementToNumber[data.otherData]].src
                 img.style.border = "1px solid #000"
                 document.getElementById("dropped_area_p1").appendChild(img)
-            } else if (data.action == "generate") {p2_make()}
+                checkRon(data.otherData)
+            } else if (data.action == "generate") {console.log("generate this in get action of generate");p2_make()}
         }
         if (data.type === "selected") {
             p1_finish_select = false
