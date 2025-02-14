@@ -418,9 +418,9 @@ function connectToPeer() {
     if (name === null) {
         name = "p1"; // 最初に接続する側を p1 に
         //console.log("✅ あなたはホスト (p1) になりました！");
-        document.getElementById("winSettingsModal").style.display = "none"
     }
     const remoteId = document.getElementById('remote-id').value;
+    document.getElementById("winSettingsModal").style.display = "none"
     conn = peer.connect(remoteId);
     setupConnection();
 }
