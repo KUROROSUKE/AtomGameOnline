@@ -285,7 +285,7 @@ async function checkRon(droppedCard) {
     // droppedCard を含む物質のみを抽出
     const validMaterialsP2 = possibleMaterialsP2.filter(material => material.components[droppedCard]);
 
-    if (validMaterialsP2.length > 1) {
+    if (validMaterialsP2.length > 0) {
         const ronButton = document.getElementById("ron_button");
         ronButton.style.display = "inline";
         ronButton.replaceWith(ronButton.cloneNode(true));
