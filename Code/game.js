@@ -279,9 +279,13 @@ async function winnerAndChangeButton() {
 
 //置き場
 async function checkRon(droppedCard) {
-    // P2のロン判定
+    // ① P2のロン判定
     const possibleMaterialsP2 = await search_materials(arrayToObj([...p2_hand, droppedCard]));
-    if (possibleMaterialsP2.length > 1) {
+
+    // droppedCard を含む物質のみを抽出
+    const validMaterialsP2 = possibleMaterialsP2.filter(material => material.components[droppedCard]);
+
+    if (validMaterialsP2.length > 1) {
         const ronButton = document.getElementById("ron_button");
         ronButton.style.display = "inline";
         ronButton.replaceWith(ronButton.cloneNode(true));
@@ -290,25 +294,26 @@ async function checkRon(droppedCard) {
         newRonButton.addEventListener("click", function () {
             newRonButton.style.display = "none";
             p2_selected_card = [droppedCard];
-            p2_make()
-            shareAction(action="generate",otherData=name);
+            p2_make();
+            shareAction(action="generate", otherData=name);
         });
     }
 
-    // P1のロン判定（捨てられたカードを含める）
+    // ② P1のロン判定
     const possibleMaterialsP1 = await search_materials(arrayToObj([...p1_hand, droppedCard]));
     const highPointMaterialsP1 = possibleMaterialsP1.filter(material => material.point >= 70);
 
-    if (highPointMaterialsP1.length > 1) {
-        // **P1の手札に捨てたカードがもうない可能性があるため、戻す**
+    // droppedCard を含む物質のみを抽出
+    const validHighPointMaterialsP1 = highPointMaterialsP1.filter(material => material.components[droppedCard]);
+
+    if (validHighPointMaterialsP1.length > 1) {
         p1_hand.push(droppedCard);
-        // P1のロン処理のため、ロンに使うカードを選択
         p1_selected_card = [droppedCard];
-        // P1のロン処理を実行
-        p2_make()
-        shareAction(action="generate",otherData=name);
+        p2_make();
+        shareAction(action="generate", otherData=name);
     }
 }
+
 
 
 
