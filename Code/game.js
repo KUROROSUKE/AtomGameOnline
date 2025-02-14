@@ -2,15 +2,15 @@ let p1_hand = []; let p2_hand = []
 let p1_point = 0; let p2_point = 0
 let p1_selected_card = []; let p2_selected_card = []
 
-const card_num = 8
-let WIN_POINT = card_num*30+10
-let WIN_TURN = 10
+const card_num = 8 //カードの枚数。基本的に8枚
 
-let dropped_cards_p1 = []; let dropped_cards_p2 = []
+let dropped_cards_p1 = []; let dropped_cards_p2 = [] //捨てられた牌が集められる。
 
-let turn = "p1"
-let time = "game"
-let numTurn = 1
+let p1_finish_select = true; let p2_finish_select = true //true: 未選択  false: 選択済み
+let p1_make_material = {} //p1が生成した物質が送られてきたときにMaterial形式で代入される
+
+let turn = "p1" //現在のターン。変わるときに相手に送られる（変わった後のが）
+let time = "game" //現在は何をするターンか。 game: カードを選択すると交換  make: カードを選択するとそのカードを使用
 
 const elementToNumber = {"H": 1, "He": 2, "Li": 3, "Be": 4, "B": 5, "C": 6, "N": 7, "O": 8, "F": 9, "Ne": 10,"Na": 11, "Mg": 12, "Al": 13, "Si": 14, "P": 15, "S": 16, "Cl": 17, "Ar": 18, "K": 19, "Ca": 20,"Fe": 26, "Cu": 29, "Zn": 30, "I": 53}
 const elements = [...Array(6).fill('H'), ...Array(4).fill('O'), ...Array(4).fill('C'),'He', 'Li', 'Be', 'B', 'N', 'F', 'Ne', 'Na', 'Mg', 'Al', 'Si', 'P', 'S', 'Cl', 'Ar', 'K', 'Ca','Fe', 'Cu', 'Zn', 'I']
@@ -19,16 +19,7 @@ let deck = [...elements, ...elements]
 let materials = []
 let imageCache = {}
 
-
-//変える必要があるコード
-/*
-ホスト側だけでの処理：deckの作成・手札の作成
-共通で管理：手札・ポイント
-
-
-
-*/
-//　load materials
+//ゲームに必要な物の読み込み（開始）
 async function loadMaterials() {
     const response = await fetch('../compound/standard.json')
     const data = await response.json()
@@ -37,9 +28,31 @@ async function loadMaterials() {
     }
     return data.material
 }
+function preloadImages() {
+    let imageNumbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 26, 29, 30, 53];
 
+    imageNumbers.forEach(num => {
+        let img = new Image();
+        img.src = `../images/${num}.webp`;
+        imageCache[num] = img;
+    });
+}
+async function init_json() {
+    materials = await loadMaterials()
+}
+document.addEventListener('DOMContentLoaded', function () {
+    preloadImages()
+    init_json()
+    deck = [...elements, ...elements]
+    deck = shuffle(deck)
+    random_hand()
+    view_p1_hand()
+    view_p2_hand()
+    turn = Math.random()>=0.5 ? "p1" : "p2"
+})
+//ゲームに必要な物の読み込み（終了）
 
-// main code
+//手札の表示（開始）
 async function view_p2_hand() {
     const area = document.getElementById('p2_hand')
     p2_hand.forEach((elem, index) => {
@@ -78,17 +91,15 @@ async function view_p2_hand() {
                 this.style.padding = "5px"
                 this.style.border = "1px solid #000"
                 p2_hand[index] = newElem
-                console.log(turn)
+                //console.log(turn)
                 turn = (turn == "p2") ? "p1" : "p2";
                 changeTurn(turn)
                 shareAction(action="exchange",otherData=img.alt)
-                setTimeout(() => {p1_action()},500)
             }
         })
         area.appendChild(image)
     })
 }
-
 async function view_p1_hand() {
     const area = document.getElementById('p1_hand')
     p1_hand.forEach((elem, index) => {
@@ -101,49 +112,12 @@ async function view_p1_hand() {
         area.appendChild(image)
     })
 }
+//手札の表示（終了）
 
-async function search(components) {
-    return materials.find(material => {
-        for (const element in components) {
-            if (!material.components[element] || material.components[element] !== components[element]) {
-                return false;
-            }
-        }
-        for (const element in material.components) {
-            if (!components[element]) {
-                return false;
-            }
-        }
-        return true;
-    }) || materials[0];
-}
-
-async function p1_make() {
-    // FIXME: ここに上がるための元素を選択するコードを実装（相手の元素の読みなどを含めて）
-
-    // TODO: とりあえず最もポイントが高い元素を利用する / from AI.js
-    const makeable_material = await search_materials(arrayToObj(p1_hand));
-
-    // 作れる物質がない場合は "なし" を返す
-    if (!makeable_material || makeable_material.length === 0) {
-        return [{
-            "name": "なし",
-            "formula": "なし",
-            "point": 0,
-            "components": {},
-            "advantageous": [],
-            "number": 0
-        }];
-    }
-
-    // ポイントが高い順にソート
-    makeable_material.sort((a, b) => b.point - a.point);
-
-    return makeable_material;
-}
-
+//生成する物質の選択（開始）
 async function p2_make() {
     // ボタンの表示を変更
+    time = "make"
     document.getElementById("generate_button").style.display = "none";
     const button = document.getElementById("done_button");
     button.style.display = "inline";
@@ -160,34 +134,36 @@ async function p2_make() {
             const p2_make_material = search(arrayToObj(p2_selected_card));
             resolve(p2_make_material);
             finishSelect();
-        }, { once: true }); // 一度だけ実行されるようにする
+        });
     });
 }
+//生成する物質の選択（終了）
 
 
-
-async function get_dora() {
-    return element[Math.round(Math.random()*23)]
-}
-
-let p1_finish_select = true
-let p2_finish_select = true
-let p1_make_material = {}
 async function done(who, isRon = false) {
     const p2_make_material = await p2_make();
-    while (p1_finish_select || p2_finish_select) {}
-    console.log("next process")
-    if (name === "p2"){finish_done_select(p1_make_material,p2_make_material,who,isRon=isRon)}
+    
+    // 待機用のPromise
+    await new Promise(resolve => {
+        const checkInterval = setInterval(() => {
+            if (!p1_finish_select && !p2_finish_select) {
+                clearInterval(checkInterval);
+                resolve();
+            }
+        }, 100);
+    });
+
+    //console.log("next process");
+    if (name === "p2") {
+        console.log("done")
+        finish_done_select(p1_make_material, p2_make_material, who, isRon);
+    }
 }
-
-
-
-
 async function finish_done_select(p1_make_material,p2_make_material,who,isRon=false) {
     dora = await get_dora();
-    console.log(`ドラ: ${dora}`);
-    console.log(p1_make_material)
-    console.log(p2_make_material)
+    //console.log(`ドラ: ${dora}`);
+    //console.log(p1_make_material)
+    //console.log(p2_make_material)
     
     let thisGame_p2_point = p2_make_material.point;
     let thisGame_p1_point = p1_make_material.point;
@@ -227,25 +203,20 @@ async function finish_done_select(p1_make_material,p2_make_material,who,isRon=fa
     document.getElementById("p2_explain").innerHTML = `生成物質：${p2_make_material.name}, 組成式：${p2_make_material.formula}`;
     document.getElementById("p1_explain").innerHTML = `生成物質：${p1_make_material.name}, 組成式：${p1_make_material.formula}`;
 
-    //updateGeneratedMaterials(p2_make_material.name); //ここは、もしかしたらAI作成に使えるかも
     sharePoints()
 
     winnerAndChangeButton()
 }
-
 async function winnerAndChangeButton() {
-    const winner = await win_check();
-    
     document.getElementById("done_button").style.display = "none";
     const button = document.getElementById("nextButton");
     button.style.display = "inline";
-    console.log("ゲーム終了");
+    //console.log("ゲーム終了");
     button.textContent = "ラウンド終了";
     button.addEventListener("click", function () {
         returnToStartScreen()
         p1_point = 0;
         p2_point = 0;
-        numTurn = 0;
         resetGame();
         button.style.display = "none"
         const newButton = button.cloneNode(true);
@@ -254,68 +225,9 @@ async function winnerAndChangeButton() {
     });
 }
 
-
-
-async function win_check() {
-    return Math.abs(p1_point - p2_point) >= WIN_POINT ? p1_point>p2_point ? "p1": "p2" : numTurn >= WIN_TURN ? p1_point>p2_point ? "p1": "p2" : null
-}
-
-async function p1_exchange(targetElem) {
-    // Select a random card index from p1_hand// TODO: from AI.js
-    dropped_cards_p1.push(p1_hand[targetElem])
-    var exchange_element = p1_hand[targetElem]
-    // Ensure the target card exists and is valid
-    if (!p1_hand[targetElem]) {
-        console.error("Invalid target element in p1_hand.")
-        return
-    }
-    // Create a new image for the dropped card area
-    const newImg = document.createElement("img")
-    newImg.src = imageCache[elementToNumber[p1_hand[targetElem]]].src
-    newImg.style.border = "1px solid #000"
-    document.getElementById("dropped_area_p1").appendChild(newImg)
-    // Update the player's hand with a new element
-    const img = document.querySelectorAll("#p1_hand img")[targetElem]
-    if (!img) {
-        console.error("Image element not found in p1_hand.")
-        return
-    }
-    // Select a new random element and replace the target card
-    const newElem = drawCard()
-    p1_hand[targetElem] = newElem
-    // Update the image element's appearance
-    img.src = imageCache[0].src
-    img.alt = newElem
-    img.style.padding = "5px"
-    img.style.border = "1px solid #000"
-    // Remove and reapply the 'selected' class to reset the state
-    img.classList.remove("selected")
-    img.classList.add("selected")
-    // Switch the turn to "p1"
-    turn = (turn == "p2") ? "p1" : "p2";
-    console.log("p1_exchange()")
-    changeTurn(turn)
-    checkRon(exchange_element);
-}
-
-async function p1_action() {
-    if (turn == name) {return}
-    console.log("p1_action()")
-}
-
-
-
-//便利系関数
-function arrayToObj(array) {
-    let result = {}
-    array.forEach(item => {
-        if (result[item]) {
-            result[item]++
-        } else {
-            result[item] = 1
-        }
-    })
-    return result
+//その他処理の関数定義（開始）
+function drawCard() {
+    return deck.length > 0 ? deck.pop() : (time = "make", done("no-draw"));
 }
 function shuffle(array) {
     let currentIndex = array.length;
@@ -334,8 +246,16 @@ function shuffle(array) {
 
     return array
 }
-function drawCard() {
-    return deck.length > 0 ? deck.pop() : (time = "make", done("no-draw"));
+function arrayToObj(array) {
+    let result = {}
+    array.forEach(item => {
+        if (result[item]) {
+            result[item]++
+        } else {
+            result[item] = 1
+        }
+    })
+    return result
 }
 async function search_materials(components) {
     return materials.filter(material => {
@@ -353,18 +273,45 @@ function random_hand() {
         p2_hand.push(drawCard())
     }
 }
+async function search(components) {
+    return materials.find(material => {
+        for (const element in components) {
+            if (!material.components[element] || material.components[element] !== components[element]) {
+                return false;
+            }
+        }
+        for (const element in material.components) {
+            if (!components[element]) {
+                return false;
+            }
+        }
+        return true;
+    }) || materials[0];
+}
+async function get_dora() {
+    return element[Math.round(Math.random()*23)]
+}
 
 const generate_Button = document.getElementById("generate_button")
 generate_Button.addEventListener("click", function () {
     if (turn === name) {
         time = "make";
         p2_make()
-        generate_Button.value = "これでアガる"
         shareAction(action="generate",otherData=name)
     }
 });
 
+//その他処理の関数定義（終了）
 
+//ゲーム後の初期化処理（開始）
+function returnToStartScreen() {
+    document.getElementById("startScreen").style.display = "flex";
+    document.getElementById("p1_area").style.display = "none";
+    document.getElementById("dropped_area_p1").style.display = "none";
+    document.getElementById("dropped_area_p2").style.display = "none";
+    document.getElementById("p2_area").style.display = "none";
+    document.getElementById("gameRuleButton").style.display = "block";
+}
 function resetGame() {
     p1_hand = [];
     p2_hand = [];
@@ -374,7 +321,6 @@ function resetGame() {
     p2_selected_card = [];
     time = "game";
     turn = Math.random() <= 0.5 ? "p1" : "p2";
-    numTurn = 1;  // ターンカウントをリセット
     p1_finish_select = true;
     p2_finish_select = true;
 
@@ -403,86 +349,16 @@ function resetGame() {
     random_hand();
     view_p1_hand();
     view_p2_hand();
+}
+//ゲーム後の初期化処理（終了）
 
-    if (turn !== name) {
-        setTimeout(() => p1_action(), 500);
+//ルールの表示（開始）
+window.onclick = function(event) {
+    const modal = document.getElementById("rulesModal");
+    if (event.target === modal) {
+        closeRules();
     }
-}
-
-function preloadImages() {
-    let imageNumbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 26, 29, 30, 53];
-
-    imageNumbers.forEach(num => {
-        let img = new Image();
-        img.src = `../images/${num}.webp`;
-        imageCache[num] = img;
-    });
-}
-
-async function init_json() {
-    materials = await loadMaterials()
-}
-
-
-
-async function checkRon(droppedCard) {
-    // P2のロン判定
-    const possibleMaterialsP2 = await search_materials(arrayToObj([...p2_hand, droppedCard]));
-    if (possibleMaterialsP2.length > 0) {
-        const ronButton = document.getElementById("ron_button");
-        ronButton.style.display = "inline";
-        ronButton.replaceWith(ronButton.cloneNode(true));
-        const newRonButton = document.getElementById("ron_button");
-
-        newRonButton.addEventListener("click", function () {
-            newRonButton.style.display = "none";
-            p2_selected_card = [droppedCard];
-            time = "make";
-            done("p2", true);
-        });
-    }
-}
-
-function updateGeneratedMaterials(materialName) {
-    if (!materialName || materialName === "なし") return;
-
-    // LocalStorage からデータを取得（なければ空のオブジェクト）
-    let generatedMaterials = JSON.parse(localStorage.getItem("generatedMaterials")) || {};
-
-    // 物質のカウントを更新
-    if (generatedMaterials[materialName]) {
-        generatedMaterials[materialName] += 1;
-    } else {
-        generatedMaterials[materialName] = 1;
-    }
-
-    // LocalStorage に保存
-    localStorage.setItem("generatedMaterials", JSON.stringify(generatedMaterials));
-}
-
-document.addEventListener('DOMContentLoaded', function () {
-    preloadImages()
-    init_json()
-    deck = [...elements, ...elements]
-    deck = shuffle(deck)
-    random_hand()
-    view_p1_hand()
-    view_p2_hand()
-    turn = Math.random()>=0.5 ? "p1" : "p2"
-    if (turn != name) {p1_action()}
-})
-
-
-//変える必要がない関数たち
-function returnToStartScreen() {
-    document.getElementById("startScreen").style.display = "flex";
-    document.getElementById("p1_area").style.display = "none";
-    document.getElementById("dropped_area_p1").style.display = "none";
-    document.getElementById("dropped_area_p2").style.display = "none";
-    document.getElementById("p2_area").style.display = "none";
-    document.getElementById("gameRuleButton").style.display = "block";
-}
-
+};
 function startGame() {
     document.getElementById("startScreen").style.display = "none";
     document.getElementById("p1_area").style.display = "block";
@@ -491,49 +367,18 @@ function startGame() {
     document.getElementById("p2_area").style.display = "block";
     document.getElementById("gameRuleButton").style.display = "none";
 }
-
 function showRules() {
     document.getElementById("rulesModal").style.display = "block";
 }
-
 function closeRules() {
     document.getElementById("rulesModal").style.display = "none";
 }
-
 document.getElementById("closeRulesButton").addEventListener("click", closeRules);
+//ルールの表示（終了）
 
-// モーダル外をクリックした場合に閉じる
-window.onclick = function(event) {
-    const modal = document.getElementById("rulesModal");
-    if (event.target === modal) {
-        closeRules();
-    }
-};
-
-//設定画面
+//設定画面（開始）
 function openWinSettings() {
     document.getElementById("winSettingsModal").style.display = "block";
-}
-function saveWinSettings() {
-    let winPointInput = parseInt(document.getElementById("winPointInput").value, 10);
-    let winTurnInput = parseInt(document.getElementById("winTurnInput").value, 10);
-
-    if (isNaN(winPointInput) || winPointInput < 1) {
-        alert("WIN_POINT は 1 以上の数値を入力してください。");
-        return;
-    }
-    if (isNaN(winPointInput) || winPointInput > 999) {
-        alert("WIN_POINT の最大値は 999 です。");
-        return;
-    }
-    if (isNaN(winTurnInput) || winTurnInput < 1) {
-        alert("WIN_TURN は 1 以上の数値を入力してください。");
-        return;
-    }
-
-    WIN_POINT = winPointInput;
-    WIN_TURN = winTurnInput;
-    closeWinSettings();
 }
 function closeWinSettings() {
     document.getElementById("winSettingsModal").style.display = "none";
@@ -541,10 +386,17 @@ function closeWinSettings() {
 document.getElementById("setting_icon").addEventListener("click", function() {
     document.getElementById("winSettingsModal").style.display = "inline"
 })
+//設定画面（終了）
+
+
+
+
+
+
+
 
 const roomName = prompt("設定するIDを入力してください:");
-var utf8_RoomName = unescape(encodeURIComponent(roomName));
-const peer = new Peer(utf8_RoomName); // 合言葉をそのままPeer IDとして使う
+const peer = new Peer(roomName); // 合言葉をそのままPeer IDとして使う
 let conn;
 let name = null; // null = 未確定, "p1" = ホスト, "p2" = ゲスト
 
@@ -557,8 +409,7 @@ peer.on('connection', connection => {
     conn = connection;
     if (name === null) {
         name = "p2"; // 後から接続した側は p2
-        console.log("✅ あなたはゲスト (p2) になりました！");
-        document.getElementById("winSettingsModal").style.display = "none"
+        //console.log("✅ あなたはゲスト (p2) になりました！");
     }
     setupConnection();
 });
@@ -566,7 +417,7 @@ peer.on('connection', connection => {
 function connectToPeer() {
     if (name === null) {
         name = "p1"; // 最初に接続する側を p1 に
-        console.log("✅ あなたはホスト (p1) になりました！");
+        //console.log("✅ あなたはホスト (p1) になりました！");
         document.getElementById("winSettingsModal").style.display = "none"
     }
     const remoteId = document.getElementById('remote-id').value;
@@ -576,24 +427,25 @@ function connectToPeer() {
 
 function setupConnection() {
     conn.on('open', () => {
-        console.log('🔗 接続しました！');
+        //console.log('🔗 接続しました！');
         if (name === "p1") {
             conn.send({ type: "role", value: "p2" }); // ゲストに "p2" であることを通知
             conn.send({ type: "turn", value: turn }); // 現在のターンを送信
         }
+        document.getElementById("winSettingsModal").style.display = "none"
         shareVariable();
         startGame();
     });
-
+    //データの処理
     conn.on('data', data => {
-        console.log("📩 受信データ:", data);
+        //console.log("📩 受信データ:", data);
         if (data.type === "role" && name === null) {
             name = data.value;
-            console.log(`✅ あなたは ${name} になりました！`);
+            //console.log(`✅ あなたは ${name} になりました！`);
         }
         if (data.type === "turn") {
             turn = data.value;
-            console.log(`🔄 ターン更新: ${turn}`);
+            //console.log(`🔄 ターン更新: ${turn}`);
         }
         if (data.type === "action") {
             if (data.action == "exchange") {
@@ -604,13 +456,19 @@ function setupConnection() {
                 img.src = imageCache[elementToNumber[data.otherData]].src
                 img.style.border = "1px solid #000"
                 document.getElementById("dropped_area_p1").appendChild(img)
-            } else if (data.action == "generate") {time = "make";done(who=data.otherData)}
+            } else if (data.action == "generate") {p2_make()}
         }
         if (data.type === "selected") {
             p1_finish_select = false
             p1_make_material = data.otherData
-            console.log(data.otherData)
-            done(name=="p1" ? "p2":"p1")
+            //console.log(data.otherData)
+            if (p2_finish_select) {
+            } else {
+                console.log("get p1 selected & do finish_done_select");
+                finish_done_select(p1_make_material, p2_make_material,"p1")
+            }
+            //もし自分がもうdoneしていたらdoneしない。
+            //もしp2（自分）がもう上がっていたならすぐにfinish_done_select
         }
         if (data.type === "pointsData") {
             p1_point = data.p1_point
@@ -629,32 +487,34 @@ function setupConnection() {
 function shareVariable() {
     if (conn && conn.open) {
         if (name === "p1") {
-            console.log("📤 ホスト (p1) として変数送信！");
+            //console.log("📤 ホスト (p1) として変数送信！");
             conn.send({ p1_hand: p2_hand, deck: deck, turn: turn });
         } else {
-            console.log("📤 ゲスト (p2) として変数送信！");
+            //console.log("📤 ゲスト (p2) として変数送信！");
             conn.send({ p1_hand: p2_hand });
         }
     } else {
-        console.log("⚠️ 接続が開かれていません！");
+        //console.log("⚠️ 接続が開かれていません！");
     }
 }
 
 function shareAction(action, otherData) {
     if (conn && conn.open) {
-        conn.send({ type: "action",action: action, otherData: otherData, deck: deck});
+        conn.send({ type: "action", action: action, otherData: otherData, deck: deck });
+    } else {
+        console.error("⚠️ 接続が開かれていません！ アクションを送信できません。");
     }
 }
 
 function changeTurn(newTurn) {
-    console.log(`🔄 ターン変更: ${newTurn}`);
+    //console.log(`🔄 ターン変更: ${newTurn}`);
     if (conn && conn.open) {
         conn.send({ type: "turn", value: newTurn });
     }
 }
 
 async function finishSelect() {
-    console.log(`${name}は選択が完了`);
+    //console.log(`${name}は選択が完了`);
     if (conn && conn.open) {
         p2_make_material = await search(arrayToObj(p2_selected_card))
         conn.send({ type: "selected", value: name, otherData: p2_make_material});
@@ -666,8 +526,12 @@ async function sharePoints() {
     if (conn && conn.open) {
         p1_explain_copy = document.getElementById("p2_explain").textContent
         p2_explain_copy = document.getElementById("p1_explain").textContent
-        console.log(p1_explain_copy)
-        console.log(p2_explain_copy)
+        //console.log(p1_explain_copy)
+        //console.log(p2_explain_copy)
         conn.send({type: "pointsData", p1_point: p2_point, p1_explain: p1_explain_copy, p2_point: p1_point, p2_explain: p2_explain_copy})
     }
 }
+
+/* 現在のバグ
+
+*/
