@@ -143,22 +143,29 @@ async function p2_make() {
 async function done(who, isRon = false) {
     const p2_make_material = await p2_make();
     
-    // 待機用のPromise
-    await new Promise(resolve => {
-        const checkInterval = setInterval(() => {
-            if (!p1_finish_select && !p2_finish_select) {
-                clearInterval(checkInterval);
-                resolve();
-            }
-        }, 100);
-    });
+    // 10秒後に強制終了
+    const timeoutPromise = new Promise(resolve => setTimeout(resolve, 10000));
 
-    //console.log("next process");
+    // `p1_finish_select` と `p2_finish_select` の両方が `false` になるのを待つ
+    await Promise.race([
+        new Promise(resolve => {
+            const checkInterval = setInterval(() => {
+                if (!p1_finish_select && !p2_finish_select) {
+                    clearInterval(checkInterval);
+                    resolve();
+                }
+            }, 100);
+        }),
+        timeoutPromise // タイムアウト処理
+    ]);
+
+    console.log("next process");
     if (name === "p2") {
         console.log("done")
         finish_done_select(p1_make_material, p2_make_material, who, isRon);
     }
 }
+
 async function finish_done_select(p1_make_material,p2_make_material,who,isRon=false) {
     dora = await get_dora();
     //console.log(`ドラ: ${dora}`);
