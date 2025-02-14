@@ -202,6 +202,9 @@ async function finish_done_select(p1_make_material,p2_make_material,who,isRon=fa
     p1_point += await thisGame_p1_point;
     p2_point += await thisGame_p2_point;
 
+    console.log(thisGame_p1_point)
+    console.log(thisGame_p2_point)
+
     // 画面に反映
     document.getElementById("p2_point").innerHTML += `+${thisGame_p2_point}`;
     document.getElementById("p1_point").innerHTML += `+${thisGame_p1_point}`;
@@ -527,12 +530,12 @@ function setupConnection() {
             //もしp2（自分）がもう上がっていたならすぐにfinish_done_select
         }
         if (data.type === "pointsData") {
-            p1_point = data.p1_point
-            p2_point = data.p2_point
-            document.getElementById("p1_point").innerHTML += `+${data.p1_point}`
-            document.getElementById("p2_point").innerHTML += `+${data.p2_point}`
+            document.getElementById("p1_point").innerHTML += `+${data.p1_point - p1_point}`
+            document.getElementById("p2_point").innerHTML += `+${data.p2_point - p2_point}`
             document.getElementById("p1_explain").innerHTML = data.p1_explain
             document.getElementById("p2_explain").innerHTML = data.p2_explain
+            p1_point = data.p1_point
+            p2_point = data.p2_point
             winnerAndChangeButton()
         }
         if (data.type === "nextIsOK") {
@@ -596,5 +599,3 @@ async function nextIsOK() {
         conn.send({type: "nextIsOK", content: true})
     }
 }
-
-//どちらも「次のゲーム」ボタンを押すまで待機が必要
