@@ -217,8 +217,8 @@ function waitUntilBothTrue(getVar1, getVar2, interval = 100) {
     return new Promise((resolve) => {
         const timer = setInterval(() => {
             if (getVar1() && getVar2()) {
-            clearInterval(timer);
-            resolve();
+                clearInterval(timer);
+                resolve();
             }
         }, interval);
     });
