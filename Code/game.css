@@ -85,10 +85,10 @@
     margin-bottom: 15px;
 }
 .modal-body {
-text-align: left;
-padding-left: 20px;  /* 左に余白を入れる */
-font-size: 16px;
-line-height: 1.6;
+    text-align: left;
+    padding-left: 20px;  /* 左に余白を入れる */
+    font-size: 100%;
+    line-height: 1.6;
 }
 /* ✕ボタンのスタイル */
 .close {
@@ -177,6 +177,12 @@ input[type="number"]{
         flex-direction: column;
         text-align: center;
         z-index: 100;
+    }
+    .modal-body {
+        text-align: left;
+        padding-left: 10px;  /* 左に余白を入れる */
+        font-size: 80%;
+        line-height: 1.6;
     }
 }
 @media screen and (min-width: 601px) {
