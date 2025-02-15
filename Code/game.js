@@ -425,8 +425,10 @@ function resetGame() {
     document.getElementById("p1_explain").innerHTML = "　";
     document.getElementById("p2_point").innerHTML = `ポイント：${p2_point}`;
     document.getElementById("p2_explain").innerHTML = "　";
-
-    document.getElementById("generate_button").style.display = "inline";
+    
+    if (name == "p1") {
+        document.getElementById("generate_button").style.display = "inline";
+    }
     document.getElementById("done_button").style.display = "none";
     document.getElementById("nextButton").style.display = "none";
 
