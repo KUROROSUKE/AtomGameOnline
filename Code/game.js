@@ -23,6 +23,9 @@ let deck = [...elements, ...elements]
 let materials = []
 let imageCache = {}
 
+
+
+
 //ゲームに必要な物の読み込み（開始）
 async function loadMaterials() {
     const response = await fetch('../compound/standard.json')
@@ -123,6 +126,7 @@ async function p2_make() {
     // ボタンの表示を変更
     time = "make"
     document.getElementById("generate_button").style.display = "none";
+    document.getElementById("ron_button").style.display = "none";
     const button = document.getElementById("done_button");
     button.style.display = "inline";
 
@@ -243,6 +247,8 @@ async function winnerAndChangeButton() {
             // 4. is_ok_p1 と is_ok_p2 がともに true になるまで待つ
             is_ok_p2 = true;
             nextIsOK()
+            button.style.display = "none";
+            console.log("OK")
             await waitUntilBothTrue(
                 () => is_ok_p1,
                 () => is_ok_p2
@@ -252,7 +258,6 @@ async function winnerAndChangeButton() {
             // 5. 両方 OK なら、次のゲーム処理を実行
             numTurn += 1;
             resetGame();
-            button.style.display = "none";
             // addEventListener の重複を避けるため、一度ボタンを置き換える
             const newButton = button.cloneNode(true);
             button.parentNode.replaceChild(newButton, button);
@@ -295,24 +300,16 @@ async function checkRon(droppedCard) {
             newRonButton.style.display = "none";
             p2_selected_card = [droppedCard];
             p2_make();
+            
+            // 捨て牌一覧の最後の要素を取得し、赤枠を付ける
+            const DroppedCards = document.getElementById("dropped_area_p1").children
+            const lastDiscard = DroppedCards[DroppedCards.length - 1]
+            lastDiscard.style.border = "2px solid red";
             shareAction(action="generate", otherData=name);
         });
     }
-
-    // ② P1のロン判定
-    const possibleMaterialsP1 = await search_materials(arrayToObj([...p1_hand, droppedCard]));
-    const highPointMaterialsP1 = possibleMaterialsP1.filter(material => material.point >= 70);
-
-    // droppedCard を含む物質のみを抽出
-    const validHighPointMaterialsP1 = highPointMaterialsP1.filter(material => material.components[droppedCard]);
-
-    if (validHighPointMaterialsP1.length > 1) {
-        p1_hand.push(droppedCard);
-        p1_selected_card = [droppedCard];
-        p2_make();
-        shareAction(action="generate", otherData=name);
-    }
 }
+
 
 
 
@@ -533,8 +530,13 @@ function setupConnection() {
         if (name === "p1") {
             conn.send({ type: "role", value: "p2" }); // ゲストに "p2" であることを通知
             conn.send({ type: "turn", value: turn }); // 現在のターンを送信
+            if (turn != name) {
+                document.getElementById("generate_button").style.display = "none";
+            } else if (search_materials(arrayToObj(p2_hand))) {
+                document.getElementById("generate_button").style.display = "inline";
+            }
         }
-        document.getElementById("winSettingsModal").style.display = "none"
+        document.getElementById("winSettingsModal").style.display = "none";
         shareVariable();
         startGame();
     });
@@ -547,6 +549,11 @@ function setupConnection() {
         }
         if (data.type === "turn") {
             turn = data.value;
+            if (turn != name) {
+                document.getElementById("generate_button").style.display = "none";
+            } else if (search_materials(arrayToObj(p2_hand))) {
+                document.getElementById("generate_button").style.display = "inline";
+            }
             //console.log(`🔄 ターン更新: ${turn}`);
         }
         if (data.type === "action") {
@@ -616,6 +623,11 @@ function changeTurn(newTurn) {
     //console.log(`🔄 ターン変更: ${newTurn}`);
     if (conn && conn.open) {
         conn.send({ type: "turn", value: newTurn });
+        if (turn != name) {
+            document.getElementById("generate_button").style.display = "none";
+        } else if (search_materials(arrayToObj(p2_hand))) {
+            document.getElementById("generate_button").style.display = "inline";
+        }
     }
 }
 
